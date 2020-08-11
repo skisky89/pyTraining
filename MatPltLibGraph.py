@@ -41,6 +41,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.show()
 
+        # Use a timer to trigger redraw
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.update_plot)
+        self.timer.start()
+
+    def update_plot(self):
+        # discard first y element, append a new one.
+        self.yData = self.yData[1:] + [random.randint(0, 10)]
+        self.canvas.axes.cla()  # Clear the canvas.
+        self.canvas.axes.plot(self.xData, self.yData, 'r')
+        # Trigger the canvas to update and redraw.
+        self.canvas.draw()
+
 
 app = QtWidgets.QApplication(sys.argv)
 w = MainWindow()
