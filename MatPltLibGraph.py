@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-MatPlotLib Tutorial and tinkering
-"""
-
 import sys
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavToolbar
 from matplotlib.figure import Figure
@@ -33,11 +28,16 @@ class MainWindow(QtWidgets.QMainWindow):
         FigObj.axes.plot([0,1,2,3,4], [10,1,20,3,40])
         
         #create a toolbar object for interacting with the figure
-        toolbar = NavigationToolbar(sc, self)
+        toolbar = NavToolbar(FigObj, self)
         
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(toolbar)
+        layout.addWidget(FigObj)
         
-        
-        self.setCentralWidget(FigObj)
+        #Place-holder for toolbar
+        widget = QtWidgets.QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
 
         self.show()
 
