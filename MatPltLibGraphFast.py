@@ -30,6 +30,8 @@ class MainWindow(QtWidgets.QMainWindow):
         n_data = 50
         self.xData = list(range(n_data))
         self.yData = [random.randint(0, 10) for i in range(n_data)]
+        
+        self.PlotRef = None
         self.update_plot()
         
         self.show()
@@ -43,8 +45,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def update_plot(self):
         # discard first y element, append a new one.
         self.yData = self.yData[1:] + [random.randint(0, 10)]
-        self.FigObj.axes.cla()  # Clear the canvas.
-        self.FigObj.axes.plot(self.xData, self.yData, 'r')
+        
+        if self.PlotRef is None:
+            PlotRefs = self.FigObj.axes.plot(self.xData, self.yData, 'r')
+            self.PlotRef = PlotRefs[0]
+        
+        else:
+            self.PlotRef.set_ydata(self.yData)
+  
         # Trigger the canvas to update and redraw.
         self.FigObj.draw()
 
